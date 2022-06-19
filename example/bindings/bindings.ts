@@ -48,6 +48,17 @@ const opts = {
 const _lib = await prepare(opts, {
   add: { parameters: ["i32", "i32"], result: "i32", nonblocking: false },
   add2: { parameters: ["pointer", "usize"], result: "i32", nonblocking: false },
+  callback: {
+    parameters: [{
+      "function": {
+        "parameters": ["i32", "i32"],
+        "result": "void",
+        "nonBlocking": false,
+      },
+    }],
+    result: "void",
+    nonblocking: false,
+  },
   sleep: { parameters: ["u64"], result: "void", nonblocking: true },
   test_buf: {
     parameters: ["pointer", "usize"],
@@ -174,7 +185,14 @@ export function add2(a0: Input) {
   const result = rawResult
   return result
 }
-export function sleep(a0: bigint) {
+export function callback(a0: any) {
+  let rawResult = _lib.symbols.callback(
+    new Deno.UnsafeCallback({ parameters: ["i32", "i32"], result: "void" }, a0),
+  )
+  const result = rawResult
+  return result
+}
+export function sleep(a0: number) {
   let rawResult = _lib.symbols.sleep(a0)
   const result = rawResult
   return result

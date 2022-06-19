@@ -1,6 +1,7 @@
 import {
   add,
   add2,
+  callback,
   OptionStruct,
   sleep,
   test_buf,
@@ -204,5 +205,16 @@ Deno.test({
   name: "test_hashmap#test",
   fn: () => {
     assertEquals(test_hashmap(), { my_map: { "key": "value" } } as WithRecord);
+  },
+});
+
+Deno.test({
+  name: "callback#test",
+  fn: () => {
+    let result = 0;
+    callback((a, b) => {
+      result = a + b;
+    });
+    assertEquals(result, 3);
   },
 });
